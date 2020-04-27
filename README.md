@@ -1,4 +1,13 @@
 #### Commands
+- `rails new HandsOn-build-a-restful-json-api-with-rails --api -T --database=mysql`
+- packages
+```
+rspec-rails - Testing framework.
+factory_bot_rails - A fixtures replacement with a more straightforward syntax. You'll see.
+shoulda_matchers - Provides RSpec with additional matchers.
+database_cleaner - You guessed it! It literally cleans our test database to ensure a clean state in each test suite.
+faker - A library for generating fake data. We'll use this to generate test data.
+```
 
 # README
 
