@@ -63,3 +63,5 @@ gem 'jwt'
 gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'will_paginate', '~> 3.1.0'
+
+gem 'faker'
