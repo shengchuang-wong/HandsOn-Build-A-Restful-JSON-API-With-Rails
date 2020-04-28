@@ -1,46 +1,58 @@
-class ItemsController < ApplicationController
-  before_action :set_todo
-  before_action :set_todo_item, only: [:show, :update, :destroy]
+# spec/requests/items_spec.rb
+require 'rails_helper'
 
-  # GET /todos/:todo_id/items
-  def index
-    json_response(@todo.items)
+RSpec.describe 'Items API' do
+  let(:user) { create(:user) }
+  let!(:todo) { create(:todo, created_by: user.id) }
+  let!(:items) { create_list(:item, 20, todo_id: todo.id) }
+  let(:todo_id) { todo.id }
+  let(:id) { items.first.id }
+  let(:headers) { valid_headers }
+
+  describe 'GET /todos/:todo_id/items' do
+    before { get "/todos/#{todo_id}/items", params: {}, headers: headers }
+
+    # [...]
   end
 
-  # GET /todos/:todo_id/items/:id
-  def show
-    json_response(@item)
+  describe 'GET /todos/:todo_id/items/:id' do
+    before { get "/todos/#{todo_id}/items/#{id}", params: {}, headers: headers }
+
+    # [...]
   end
 
-  # POST /todos/:todo_id/items
-  def create
-    @todo.items.create!(item_params)
-    json_response(@todo, :created)
+  describe 'POST /todos/:todo_id/items' do
+    let(:valid_attributes) { { name: 'Visit Narnia', done: false }.to_json }
+
+    context 'when request attributes are valid' do
+      before do
+        post "/todos/#{todo_id}/items", params: valid_attributes, headers: headers
+      end
+
+      # [...]
+    end
+
+    context 'when an invalid request' do
+      before { post "/todos/#{todo_id}/items", params: {}, headers: headers }
+
+      # [...]
+    end
   end
 
-  # PUT /todos/:todo_id/items/:id
-  def update
-    @item.update(item_params)
-    head :no_content
+  describe 'PUT /todos/:todo_id/items/:id' do
+    let(:valid_attributes) { { name: 'Mozart' }.to_json }
+
+    before do
+      put "/todos/#{todo_id}/items/#{id}", params: valid_attributes, headers: headers
+    end
+
+    # [...]
+    # [...]
   end
 
-  # DELETE /todos/:todo_id/items/:id
-  def destroy
-    @item.destroy
-    head :no_content
-  end
+  describe 'DELETE /todos/:id' do
+    before { delete "/todos/#{todo_id}/items/#{id}", params: {}, headers: headers }
 
-  private
-
-  def item_params
-    params.permit(:name, :done)
-  end
-
-  def set_todo
-    @todo = Todo.find(params[:todo_id])
-  end
-
-  def set_todo_item
-    @item = @todo.items.find_by!(id: params[:id]) if @todo
+    # [...]
   end
 end
